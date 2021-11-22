@@ -1,0 +1,55 @@
+<div class="registerBlock">
+    <h1>Registration</h1>
+    <div class="inp">
+        <form *ngIf="!isSuccessful" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="form.username" required minlength="3" maxlength="20" #username="ngModel" />
+                <div class="alert-danger" *ngIf="username.errors && f.submitted">
+                    <div *ngIf="username.errors.required">Username is required</div>
+                    <div *ngIf="username.errors.minlength">
+                        Username must be at least 3 characters
+                    </div>
+                    <div *ngIf="username.errors.maxlength">
+                        Username must be at most 20 characters
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="Email" [(ngModel)]="form.email" required email #email="ngModel" />
+                <div class="alert-danger" *ngIf="email.errors && f.submitted">
+                    <div *ngIf="email.errors.required">Email is required</div>
+                    <div *ngIf="email.errors.email">
+                        Email must be a valid email address
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" [(ngModel)]="form.password" required minlength="6" #password="ngModel" />
+                <div class="alert-danger" *ngIf="password.errors && f.submitted">
+                    <div *ngIf="password.errors.required">Password is required</div>
+                    <div *ngIf="password.errors.minlength">
+                        Password must be at least 6 characters
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="confirmPassword" ngValidateEqual="password" [(ngModel)]="form.confirmPassword" #confirmPassword="ngModel" placeholder="Confirm Password">
+                <div *ngIf="(confirmPassword.dirty || confirmPassword.touched) && confirmPassword.invalid">
+                    <div class="alert-danger" *ngIf="confirmPassword.hasError('notEqual') && password.valid">
+                        Passwords Don't Match
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-block">Sign Up</button>
+            </div>
+            <div class="alert alert-warning" *ngIf="f.submitted && isSignUpFailed">
+                Signup failed!<br />{{ errorMessage }}
+            </div>
+        </form>
+        <div class="alert alert-success" *ngIf="isSuccessful">
+            Your registration is successful!
+        </div>
+    </div>
+</div>
